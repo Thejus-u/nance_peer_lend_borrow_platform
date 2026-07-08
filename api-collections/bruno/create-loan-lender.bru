@@ -1,0 +1,30 @@
+meta {
+  name: Create Loan (Lender)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{base_url}}/api/v1/loans/
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{lender_token}}
+}
+
+body:json {
+  {
+    "borrower_id": {{borrower_user_id}},
+    "principal_amount": "1000.00",
+    "currency": "USD",
+    "interest_rate": "8.50",
+    "repayment_term_months": 12,
+    "starts_at": "2026-07-01",
+    "ends_at": "2027-07-01",
+    "purpose": "Working capital",
+    "idempotency_key": "loan-create-bruno-1"
+  }
+}

@@ -1,0 +1,23 @@
+meta {
+  name: Reject Loan (Borrower)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{base_url}}/api/v1/loans/{{loan_id}}/reject/
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{borrower_token}}
+}
+
+body:json {
+  {
+    "reason": "Borrower rejected",
+    "idempotency_key": "loan-reject-bruno-1"
+  }
+}

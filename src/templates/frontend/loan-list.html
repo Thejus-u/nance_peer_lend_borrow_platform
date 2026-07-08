@@ -1,0 +1,31 @@
+{% extends 'frontend/base.html' %}
+{% block content %}
+<div data-page="loan-list">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>Loan Queries</h3>
+        <button id="refreshLoanList" class="btn btn-outline-primary btn-sm">Refresh</button>
+    </div>
+    <div class="row g-3">
+        <div class="col-12">
+            <h5>Incoming Requests (Borrower)</h5>
+            <pre id="incomingLoansResult"></pre>
+        </div>
+        <div class="col-12">
+            <h5>Loans Lent</h5>
+            <pre id="lentLoansResult"></pre>
+        </div>
+        <div class="col-12">
+            <h5>Loans Borrowed</h5>
+            <pre id="borrowedLoansResult"></pre>
+        </div>
+        <div class="col-md-6">
+            <h5>Active Loans</h5>
+            <pre id="activeLoansResult"></pre>
+        </div>
+        <div class="col-md-6">
+            <h5>Settled Loans</h5>
+            <pre id="settledLoansResult"></pre>
+        </div>
+    </div>
+</div>
+{% endblock %}

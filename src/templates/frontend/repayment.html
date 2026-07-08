@@ -1,0 +1,27 @@
+{% extends 'frontend/base.html' %}
+{% block content %}
+<div data-page="repayment">
+    <h3>Repayment</h3>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <form id="createRepaymentForm" class="card card-body">
+                <h5>Create Repayment</h5>
+                <input name="loan_id" type="number" class="form-control mb-2" placeholder="Loan ID" required>
+                <input name="installment_number" type="number" class="form-control mb-2" placeholder="Installment Number" required>
+                <input name="due_date" type="date" class="form-control mb-2" required>
+                <input name="amount_due" class="form-control mb-2" placeholder="Amount Due" required>
+                <button class="btn btn-primary" type="submit">Create Repayment</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <form id="payRepaymentForm" class="card card-body">
+                <h5>Pay Repayment</h5>
+                <input name="repayment_id" type="number" class="form-control mb-2" placeholder="Repayment ID" required>
+                <input name="payment_amount" class="form-control mb-2" placeholder="Payment Amount" required>
+                <button class="btn btn-success" type="submit">Pay</button>
+            </form>
+        </div>
+    </div>
+    <pre id="repaymentResult" class="mt-3"></pre>
+</div>
+{% endblock %}

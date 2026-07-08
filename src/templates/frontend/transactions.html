@@ -1,0 +1,35 @@
+{% extends 'frontend/base.html' %}
+{% block content %}
+<div data-page="transactions">
+    <h3>Transactions</h3>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <form id="createTransactionForm" class="card card-body">
+                <h6>Create Transaction</h6>
+                <input name="amount" class="form-control mb-2" placeholder="Amount" required>
+                <input name="transaction_date" class="form-control mb-2" type="datetime-local" required>
+                <input name="narration" class="form-control mb-2" placeholder="Narration">
+                <select name="direction" class="form-select mb-2"><option value="credit">credit</option><option value="debit">debit</option></select>
+                <input name="account_number" class="form-control mb-2" placeholder="Account Number" required>
+                <input name="bank" class="form-control mb-2" placeholder="Bank" required>
+                <select name="account_type" class="form-select mb-2"><option value="savings">savings</option><option value="current">current</option><option value="wallet">wallet</option><option value="other">other</option></select>
+                <button class="btn btn-primary" type="submit">Create</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <div class="card card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0">Summary</h6>
+                    <button id="loadTransactionSummary" class="btn btn-outline-secondary btn-sm">Refresh</button>
+                </div>
+                <pre id="transactionSummary"></pre>
+            </div>
+        </div>
+    </div>
+    <div class="mt-3 d-flex justify-content-between align-items-center">
+        <h6>Transaction List</h6>
+        <button id="loadTransactions" class="btn btn-outline-primary btn-sm">Refresh List</button>
+    </div>
+    <pre id="transactionsResult"></pre>
+</div>
+{% endblock %}

@@ -1,0 +1,52 @@
+[
+  {
+    "subject": "UPI debit alert - INR 450.00",
+    "from": "alerts@alerts.hdfcbank.com",
+    "body": "Your account ending 1234 is debited by INR 450.00 via UPI to chai@oksbi. Ref UTR1234567."
+  },
+  {
+    "subject": "UPI credit alert - INR 899.50",
+    "from": "notify@icicibank.com",
+    "body": "INR 899.50 credited to A/C XX8911 from rent@okaxis. Ref UTR1234568."
+  },
+  {
+    "subject": "NEFT transaction successful",
+    "from": "alerts@axisbank.com",
+    "body": "A/C ending 4567 debited INR 12000.00 via NEFT. Txn ID NEFT998877."
+  },
+  {
+    "subject": "RTGS transfer update",
+    "from": "mail@sbi.co.in",
+    "body": "INR 50000.00 credited in account ending 3344 through RTGS Ref RTGS123123."
+  },
+  {
+    "subject": "ATM cash withdrawal alert",
+    "from": "alerts@kotak.com",
+    "body": "Your account ending 7788 has been debited INR 2000.00 at ATM. Ref ATM009988."
+  },
+  {
+    "subject": "Debit card txn alert",
+    "from": "alerts@yesbank.in",
+    "body": "Debit card transaction: INR 1320.00 debited from a/c XX7781 at Grocery Hub. Ref DBT112233."
+  },
+  {
+    "subject": "Account credit notification",
+    "from": "alerts@indusind.com",
+    "body": "Account ending 9009 credited with INR 3000.00 from ACME Payroll. Ref CRD445566."
+  },
+  {
+    "subject": "IMPS debit update",
+    "from": "alerts@rblbank.com",
+    "body": "INR 2500.00 debited from account ending 6611 via IMPS to vendor@okhdfcbank. Ref IMPS556677."
+  },
+  {
+    "subject": "Balance alert with transaction",
+    "from": "updates@alerts.hdfcbank.com",
+    "body": "Your account ending 7711 is debited INR 199.99 at Fuel Pump. Available balance is INR 14560.00. Ref BLN334455."
+  },
+  {
+    "subject": "Current account credit received",
+    "from": "updates@icicibank.com",
+    "body": "Current account ending 1119 credited INR 7250.00 from Client XYZ. Ref CUR001122."
+  }
+]

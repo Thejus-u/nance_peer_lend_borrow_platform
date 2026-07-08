@@ -1,0 +1,14 @@
+{% extends 'frontend/base.html' %}
+{% block content %}
+<div data-page="dashboard">
+    <h3>Dashboard</h3>
+    <p class="text-muted">Simple summary from backend APIs.</p>
+    <div class="row g-3 mb-3">
+        <div class="col-md-3"><div class="card card-body"><strong>Loan Count</strong><span id="loanCount">-</span></div></div>
+        <div class="col-md-3"><div class="card card-body"><strong>Transaction Count</strong><span id="txCount">-</span></div></div>
+        <div class="col-md-3"><div class="card card-body"><strong>Notification Count</strong><span id="notificationCount">-</span></div></div>
+        <div class="col-md-3"><div class="card card-body"><strong>Current User</strong><span id="currentUser">-</span></div></div>
+    </div>
+    <pre id="dashboardRaw"></pre>
+</div>
+{% endblock %}

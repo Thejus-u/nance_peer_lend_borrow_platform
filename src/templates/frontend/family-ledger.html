@@ -1,0 +1,58 @@
+{% extends 'frontend/base.html' %}
+{% block content %}
+<div data-page="family-ledger">
+    <h3>Family Ledger</h3>
+    <div id="familyLedgerStatus" class="alert alert-secondary">Loading family context...</div>
+
+    <div id="familyCreateSection" class="card card-body mb-3 d-none">
+        <h6>Create Family</h6>
+        <form id="createFamilyForm" class="d-flex gap-2">
+            <input id="createFamilyName" type="text" class="form-control" placeholder="Family name" required>
+            <button class="btn btn-primary" type="submit">Create Family</button>
+        </form>
+    </div>
+
+    <div id="familyInvitationsSection" class="card card-body mb-3 d-none">
+        <h6>Pending Invitations</h6>
+        <div id="familyInvitationsList"></div>
+    </div>
+
+    <div id="familyDetailsSection" class="d-none">
+        <div class="alert alert-info mb-3">
+            Active Family: <strong id="familyLedgerFamilyName"></strong>
+            <span class="text-muted" id="familyLedgerFamilyId"></span>
+            <div class="small mt-1">Owner: <span id="familyOwnerLabel">-</span></div>
+        </div>
+
+        <div class="card card-body mb-3">
+            <h6>Members</h6>
+            <ul id="familyMembersList" class="mb-0"></ul>
+        </div>
+
+        <div id="familyOwnerActions" class="row g-4 d-none">
+            <div class="col-md-6">
+                <form id="inviteFamilyMemberForm" class="card card-body">
+                    <h6>Invite Member</h6>
+                    <input id="inviteUserId" type="number" class="form-control mb-2" placeholder="User ID" required>
+                    <button class="btn btn-primary" type="submit">Send Invitation</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <form id="removeFamilyMemberForm" class="card card-body">
+                    <h6>Remove Member</h6>
+                    <input id="removeUserId" type="number" class="form-control mb-2" placeholder="Member User ID" required>
+                    <button class="btn btn-danger" type="submit">Remove</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card card-body mt-3">
+            <h6>Ledger</h6>
+            <form id="loadFamilyLedgerForm">
+                <button class="btn btn-secondary" type="submit">Load Ledger</button>
+            </form>
+            <pre id="familyLedgerResult" class="mt-3 mb-0"></pre>
+        </div>
+    </div>
+</div>
+{% endblock %}

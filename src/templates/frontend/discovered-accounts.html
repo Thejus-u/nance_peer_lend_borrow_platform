@@ -1,0 +1,38 @@
+{% extends 'frontend/base.html' %}
+{% block content %}
+<div data-page="discovered-accounts">
+    <h3>Discovered Accounts</h3>
+    <div class="card card-body mb-3">
+        <div class="d-flex flex-column flex-md-row justify-content-between gap-3 align-items-md-center">
+            <div>
+                <h5 class="mb-2">Gmail Integration</h5>
+                <div><strong>Connection Status:</strong> <span id="gmailConnectionStatus">Checking...</span></div>
+                <div><strong>Connected Email:</strong> <span id="gmailConnectedEmail">-</span></div>
+                <div><strong>Last Sync:</strong> <span id="gmailLastSync">-</span></div>
+                <div><strong>Fetched Email Count:</strong> <span id="gmailFetchedEmailCount">0</span></div>
+            </div>
+            <div class="d-flex gap-2">
+                <button id="connectGmailBtn" type="button" class="btn btn-outline-danger">Connect Gmail</button>
+                <button id="syncGmailBtn" type="button" class="btn btn-outline-primary">Sync Gmail</button>
+            </div>
+        </div>
+    </div>
+    <form id="discoverAccountForm" class="card card-body mb-3">
+        <div class="row g-2">
+            <div class="col-md-4"><input name="account_number" class="form-control" placeholder="Account Number" required></div>
+            <div class="col-md-4"><input name="bank" class="form-control" placeholder="Bank" required></div>
+            <div class="col-md-2">
+                <select name="account_type" class="form-select"><option value="savings">savings</option><option value="current">current</option><option value="wallet">wallet</option><option value="other">other</option></select>
+            </div>
+            <div class="col-md-2"><button class="btn btn-primary w-100" type="submit">Discover</button></div>
+        </div>
+    </form>
+    <button id="loadDiscoveredAccounts" class="btn btn-outline-primary btn-sm mb-2">Refresh List</button>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead><tr><th>ID</th><th>Bank</th><th>Account</th><th>Type</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="discoveredAccountsBody"></tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

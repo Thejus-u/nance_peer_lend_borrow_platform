@@ -1,0 +1,21 @@
+{% extends 'frontend/base.html' %}
+{% block content %}
+<div data-page="notifications">
+    <h3>Notifications</h3>
+    <form id="createNotificationForm" class="card card-body mb-3">
+        <div class="row g-2">
+            <div class="col-md-2"><select name="channel" class="form-select"><option value="in_app">in_app</option><option value="sms">sms</option><option value="email">email</option></select></div>
+            <div class="col-md-3"><input name="title" class="form-control" placeholder="Title" required></div>
+            <div class="col-md-5"><input name="message" class="form-control" placeholder="Message" required></div>
+            <div class="col-md-2"><button class="btn btn-primary w-100" type="submit">Create</button></div>
+        </div>
+    </form>
+    <button id="loadNotifications" class="btn btn-outline-primary btn-sm mb-2">Refresh Notifications</button>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead><tr><th>ID</th><th>Channel</th><th>Status</th><th>Title</th><th>Actions</th></tr></thead>
+            <tbody id="notificationsBody"></tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+[
+  {
+    "subject": "Credit card statement for July",
+    "from": "alerts@alerts.hdfcbank.com",
+    "body": "Your credit card statement is generated. Total due INR 12345.00, minimum due INR 1200.00."
+  },
+  {
+    "subject": "EMI auto debit reminder",
+    "from": "notify@icicibank.com",
+    "body": "Your EMI installment due of INR 2450.00 will be auto debited tomorrow."
+  },
+  {
+    "subject": "Exclusive cashback offer",
+    "from": "promo@axisbank.com",
+    "body": "Limited period promotional offer. Get cashback on your next transaction. Unsubscribe anytime."
+  }
+]

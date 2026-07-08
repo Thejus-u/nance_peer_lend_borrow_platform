@@ -1,0 +1,22 @@
+meta {
+  name: Cancel Loan (Lender before acceptance)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{base_url}}/api/v1/loans/{{loan_id}}/cancel/
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{lender_token}}
+}
+
+body:json {
+  {
+    "idempotency_key": "loan-cancel-bruno-1"
+  }
+}

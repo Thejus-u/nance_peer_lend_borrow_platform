@@ -1,0 +1,332 @@
+
+Peer Lend & Borrow Platform
+1. Background
+You are working on Nance, a personal finance platform that helps users track real bank transactions, understand spending, and improve financial health.
+Nance already ingests credit card transactions from a user’s Gmail by parsing bank alert emails, matching them to linked cards, and syncing spend.
+This assignment extends that pattern to savings and current bank accounts, and introduces a peer lend/borrow system with repayment tracking, Gmail transaction ingestion, account discovery, notifications, real-time updates, and AWS deployment.
+______________________________________________________
+2. Objective
+Design and implement a solution that:
+Lets a Nance user create a loan to another user by mobile number
+Requires the borrower to accept before the loan becomes active
+Supports partial repayments with an accurate running balance
+Shows each user their lent and borrowed positions
+Provides a family ledger with net balances among linked family members
+Fetches savings/current account bank transactions from Gmail
+Detects bank accounts present in Gmail but not yet connected in the app
+Sends notifications when loans are created, accepted, rejected, repaid, settled, or overdue
+Pushes real-time WebSocket updates when loan status changes
+Deploys end-to-end on AWS with PgBouncer in front of RDS
+The solution must include backend APIs.
+A simple frontend or API client, such as a Postman/Bruno collection or minimal UI, that demonstrates the flows is required.
+______________________________________________________
+3. Tech Stack Requirements
+Backend (Mandatory)
+Django
+Django REST Framework
+PostgreSQL
+JWT authentication using simplejwt or a mock authentication layer
+Async & Notifications (Mandatory)
+Celery
+Redis
+At least one scheduled job using Celery Beat
+Real-Time (Mandatory)
+Django Channels or equivalent WebSocket layer
+WebSocket push when loan status changes
+Gmail / Bank Email Ingestion (Mandatory)
+Gmail API using OAuth2 or a well-documented mock layer with realistic fixtures
+Parser for savings/current account transaction alert emails
+Exclude credit card, EMI, loan statement, marketing, and cross-sell emails
+Deployment (Mandatory)
+Docker
+AWS ECR
+AWS ECS Fargate
+RDS PostgreSQL
+ElastiCache Redis
+PgBouncer in front of RDS
+GitHub Actions CI/CD
+Frontend / Demo Client (Required)
+Use any one of the following:
+Modern frontend framework
+Plain HTML/CSS/JS
+Postman/Bruno collection with screenshots
+Optional Bonus
+Mock FCM/webhook push notification payload
+AWS cost breakdown for ap-south-1
+______________________________________________________
+4. Functional Requirements
+4.1 User & Identity
+Each user is identified by:
+Mobile number, unique
+Name
+Optional profile image
+One or more connected Gmail accounts
+You may assume authentication is already handled or implement a minimal login/register flow.
+Users may already be on Nance or may not yet be onboarded.
+If the borrower is not on Nance, the loan remains in pending_invite until they sign up and accept.
+4.2 Loan Creation — Lend Flow
+A lender can create a loan with:
+Borrower mobile number
+Amount in INR
+Optional note
+Optional due date
+Optional source bank transaction reference
+Rules:
+Lender and borrower must be different users
+Amount must be greater than 0
+Loan starts in pending_acceptance
+Lender can cancel only before acceptance
+Idempotency-Key header must be supported on loan creation
+4.3 Loan Acceptance — Borrow Flow
+The borrower should see incoming loan requests and can:
+Accept ? loan becomes active
+Reject ? loan becomes rejected
+Until acceptance, the loan should not appear in the borrower’s active obligations.
+4.4 Repayments
+Repayments should support:
+Amount
+Date
+Optional note
+Optional bank/UPI transaction reference from ingested email data
+Rules:
+Total repayments cannot exceed the original loan amount
+Balance = principal - sum of repayments
+When balance reaches 0, loan status becomes settled
+Repayments must be atomic under concurrent requests
+4.5 Family Links & Family Ledger
+Users can mark another Nance user as a family member with:
+Relationship label
+Visibility preference
+The family ledger should show:
+Per-member total lent
+Per-member total borrowed
+Net position
+Optional:
+Consolidated “A owes B ?X” across direct loans
+4.6 Savings / Current Account Email Ingestion
+Build Gmail-based ingestion for savings and current account transaction alerts.
+Include:
+UPI debits and credits
+Debit card transactions linked to savings/current accounts
+NEFT / IMPS / RTGS transactions
+ATM withdrawals
+Account debit / credit alerts
+Balance update alerts where transaction details are available
+Whitelisted bank sender domains
+Exclude:
+Credit card spend alerts
+EMI / loan statement emails
+Marketing or promotional emails
+Bank cross-sell emails
+Transaction records must include:
+Amount
+Date & time
+Merchant / narration
+Direction: debit or credit
+Bank name
+Masked account number
+Account type
+Source = gmail
+Raw email reference ID
+4.7 Bank Account Discovery from Gmail
+While scanning Gmail, the system should detect bank accounts appearing in emails that are not yet linked inside Nance.
+A discovered account should be stored with:
+Bank name
+Account type
+Masked account number
+First seen timestamp
+Number of supporting emails
+Status: unlinked, dismissed, or linked
+Expected behavior:
+If the account is not linked in Nance, surface a prompt asking the user to connect it
+User can dismiss the suggestion
+User can initiate account linking
+Once dismissed or linked, the same account should not be prompted again
+Important:
+Do not confuse credit card last-4 digits with bank account last-4 digits
+Only linked savings/current accounts should be used for transaction reconciliation and loan repayment matching
+4.8 Notifications
+Trigger notifications for:
+New loan request received
+Loan accepted
+Loan rejected
+Repayment recorded
+Loan fully settled
+Overdue reminder
+New bank account discovered from Gmail
+Each notification must have a dedupe key.
+4.9 Real-Time WebSocket Updates
+When loan state changes, push an event to connected clients for both lender and borrower.
+Supported events:
+loan.created
+loan.accepted
+loan.rejected
+loan.repayment_recorded
+loan.settled
+Requirements:
+Authenticate WebSocket connections
+A user must only receive events for loans they are party to
+Document reconnect and missed-event strategy
+4.10 Transaction Reconciliation
+If a repayment includes a bank transaction reference or is suggested from ingested Gmail data, the system should attempt to match it against savings/current account transactions.
+Matching should consider:
+Amount
+Date proximity
+Direction
+Counterparty or narration, when available
+Store match confidence:
+high
+medium
+low
+Rules:
+Flag unmatched repayments for manual review
+Never auto-settle a loan without user confirmation
+4.11 Audit Trail
+Every important state change must be stored in an append-only event log.
+Events include:
+Loan created
+Loan accepted
+Loan rejected
+Loan cancelled
+Repayment recorded
+Loan settled
+Email parsed
+Bank account discovered
+Notification created
+Each event should store:
+Timestamp
+Actor
+Event type
+Entity reference
+Payload snapshot
+______________________________________________________
+5. API Expectations
+Expose APIs to:
+Create a loan
+List loans with filters and pagination
+Get loan detail with repayment history
+Accept or reject a loan
+Record a repayment
+Cancel a pending loan
+Add or remove family link
+Get family ledger
+Connect Gmail / trigger savings-account sync
+List ingested savings/current account transactions
+List discovered unlinked bank accounts
+Dismiss discovered bank account
+Initiate bank account connect flow
+Health check: /health/
+______________________________________________________
+6. Edge Cases to Handle
+Your solution should reasonably handle:
+Borrower not on Nance yet
+Concurrent repayment requests on the same loan
+User A cannot read User B’s loan by guessing the ID
+Partial repayments that would exceed principal
+Same Gmail alert parsed twice
+Credit card email misclassified as savings/current account transaction
+Savings account last-4 colliding with credit card last-4 in email text
+Discovered account dismissed, then new emails arrive
+Gmail token expired
+Loans with no due date
+WebSocket client offline during status change
+Perfect handling of every edge case is not required. Critical cases should be handled, and assumptions should be documented.
+______________________________________________________
+7. AWS Deployment Requirements
+Deploy your application to AWS and document the setup in DEPLOY.md.
+Minimum Infrastructure
+Internet ? ALB ? ECS Fargate (API + WebSocket via ASGI)
+                    +-- PgBouncer ? RDS PostgreSQL
+                    +-- ElastiCache Redis
+                    +-- ECS Fargate (Celery worker + Beat)
+Must Demonstrate
+Item
+Requirement
+ECR
+Docker image built and pushed
+ECS
+Separate services for API and Celery worker
+RDS
+PostgreSQL behind PgBouncer
+PgBouncer
+API and worker connect through PgBouncer
+Secrets
+SSM or Secrets Manager
+CI/CD
+GitHub Actions
+Health
+/health/
+Logs
+CloudWatch logs
+PgBouncer Notes
+In DEPLOY.md, explain:
+Why PgBouncer is needed
+Pool mode chosen
+Pool sizing rationale
+______________________________________________________
+8. Testing Requirements
+At minimum:
+Unit tests for loan state machine
+Unit tests for balance calculation
+API tests for create, accept, reject, repay, and cancel flows
+API tests for permission failures
+Test idempotent loan creation using Idempotency-Key
+Test that concurrent repayments cannot overpay
+Unit tests for email parser fixtures
+Tests for discovered bank account flow
+Bonus:
+WebSocket integration test
+Celery task tests
+Family ledger aggregation tests
+______________________________________________________
+9. Deliverables
+Please submit:
+1. GitHub Repository
+The repository should contain:
+Backend using Django, DRF, and Channels
+Frontend or API demo collection
+Dockerfile
+docker-compose.yml
+Local PgBouncer setup
+2. README
+The README should explain:
+Overall approach
+Assumptions
+Loan lifecycle and state transitions
+Gmail savings/current account parsing approach
+How credit card emails are excluded
+How to run locally
+3. DESIGN.md
+The design document should include:
+Data model diagram
+Sequence diagram: lend ? accept ? repay ? settle
+Sequence diagram: Gmail sync ? discover unlinked account
+Security and permission model
+WebSocket event contract
+Important trade-offs and assumptions
+4. DEPLOY.md
+The deployment document should include:
+AWS architecture diagram including PgBouncer
+PgBouncer configuration
+Pool sizing rationale
+Step-by-step deployment instructions
+Live API base URL
+Reachable health endpoint
+5. Sample Data
+Provide:
+Seed scripts with at least 3 users
+At least 5 loans with mixed statuses
+At least 10 sample savings/current account email fixtures
+At least 3 credit card emails that must be ignored
+6. Walkthrough
+Provide either:
+Loom video of 10 minutes or less
+Written demo script
+The walkthrough should cover the core lend, accept, repay, Gmail sync, discovered account, notification, and real-time update flows.
+______________________________________________________
+10. Final Notes
+This assignment is intended to evaluate practical backend ownership across product logic, data integrity, asynchronous processing, real-time communication, and production deployment.
+Document assumptions where requirements are open-ended, and keep the solution focused on correctness, clarity, and maintainability.
+Suggested timeline: 5–7 days
+Effort cap: approximately 12 focused hours
+

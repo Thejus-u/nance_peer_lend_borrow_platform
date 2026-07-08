@@ -1,0 +1,16 @@
+{% extends 'frontend/base.html' %}
+{% block content %}
+<div data-page="loan-detail">
+    <h3>Loan Detail</h3>
+    <div class="row g-3 mb-3">
+        <div class="col-md-4"><input id="loanDetailId" class="form-control" type="number" placeholder="Loan ID"></div>
+        <div class="col-md-2"><button id="loadLoanDetail" class="btn btn-primary">Load</button></div>
+    </div>
+    <div class="page-actions mb-3">
+        <button id="acceptLoanBtn" class="btn btn-success btn-sm">Accept (Borrower)</button>
+        <button id="rejectLoanBtn" class="btn btn-warning btn-sm">Reject (Borrower)</button>
+        <button id="cancelLoanBtn" class="btn btn-danger btn-sm">Cancel (Lender, before acceptance)</button>
+    </div>
+    <pre id="loanDetailResult"></pre>
+</div>
+{% endblock %}

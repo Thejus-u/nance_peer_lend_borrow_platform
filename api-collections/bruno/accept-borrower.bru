@@ -1,0 +1,22 @@
+meta {
+  name: Accept Loan (Borrower)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{base_url}}/api/v1/loans/{{loan_id}}/accept/
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+  Authorization: Bearer {{borrower_token}}
+}
+
+body:json {
+  {
+    "idempotency_key": "loan-accept-bruno-1"
+  }
+}

@@ -1,0 +1,212 @@
+{
+  "info": {
+    "name": "Peer Lend Borrow API",
+    "_postman_id": "b2f1e2e8-0e3f-4f87-ae39-9e2f51c37731",
+    "description": "Updated workflow: lender creates loan, borrower accepts/rejects.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Register Lender",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/api/v1/accounts/auth/register/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"mobile_number\": \"+14150000111\",\n  \"name\": \"Lender User\",\n  \"password\": \"StrongPass123!\",\n  \"password_confirm\": \"StrongPass123!\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Register Borrower",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/api/v1/accounts/auth/register/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"mobile_number\": \"+14150000112\",\n  \"name\": \"Borrower User\",\n  \"password\": \"StrongPass123!\",\n  \"password_confirm\": \"StrongPass123!\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Login Lender",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/api/v1/accounts/auth/login/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"mobile_number\": \"+14150000111\",\n  \"password\": \"StrongPass123!\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Create Loan (Lender creates)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{lender_access_token}}" }
+        ],
+        "url": "{{base_url}}/api/v1/loans/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"borrower_id\": {{borrower_user_id}},\n  \"principal_amount\": \"1000.00\",\n  \"currency\": \"USD\",\n  \"interest_rate\": \"8.50\",\n  \"repayment_term_months\": 12,\n  \"starts_at\": \"2026-07-01\",\n  \"ends_at\": \"2027-07-01\",\n  \"purpose\": \"Working capital\",\n  \"idempotency_key\": \"loan-create-postman-1\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Login Borrower",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{base_url}}/api/v1/accounts/auth/login/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"mobile_number\": \"+14150000112\",\n  \"password\": \"StrongPass123!\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Incoming Requests (Borrower)",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{borrower_access_token}}" }
+        ],
+        "url": "{{base_url}}/api/v1/loans/incoming/"
+      }
+    },
+    {
+      "name": "Accept Loan (Borrower)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{borrower_access_token}}" }
+        ],
+        "url": "{{base_url}}/api/v1/loans/{{loan_id}}/accept/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"idempotency_key\": \"loan-accept-postman-1\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Reject Loan (Borrower)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{borrower_access_token}}" }
+        ],
+        "url": "{{base_url}}/api/v1/loans/{{loan_id}}/reject/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"reason\": \"Borrower rejected the offer\",\n  \"idempotency_key\": \"loan-reject-postman-1\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Cancel Loan (Lender before acceptance)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{lender_access_token}}" }
+        ],
+        "url": "{{base_url}}/api/v1/loans/{{loan_id}}/cancel/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"idempotency_key\": \"loan-cancel-postman-1\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Create Family",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{lender_access_token}}" }
+        ],
+        "url": "{{base_url}}/api/v1/family/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"My Family\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Add Family Member",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{lender_access_token}}" }
+        ],
+        "url": "{{base_url}}/api/v1/family/{{family_id}}/members/add/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"member_user_id\": {{borrower_user_id}}\n}"
+        }
+      }
+    },
+    {
+      "name": "Remove Family Member",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{lender_access_token}}" }
+        ],
+        "url": "{{base_url}}/api/v1/family/{{family_id}}/members/remove/",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"member_user_id\": {{borrower_user_id}}\n}"
+        }
+      }
+    },
+    {
+      "name": "Family Ledger",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{lender_access_token}}" }
+        ],
+        "url": "{{base_url}}/api/v1/family/{{family_id}}/ledger/"
+      }
+    },
+    {
+      "name": "Notification List",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{lender_access_token}}" }
+        ],
+        "url": "{{base_url}}/api/v1/notifications/"
+      }
+    },
+    {
+      "name": "Notification Detail",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer {{lender_access_token}}" }
+        ],
+        "url": "{{base_url}}/api/v1/notifications/{{notification_id}}/"
+      }
+    }
+  ],
+  "variable": [
+    { "key": "base_url", "value": "http://127.0.0.1:8000" },
+    { "key": "lender_access_token", "value": "" },
+    { "key": "borrower_access_token", "value": "" },
+    { "key": "borrower_user_id", "value": "2" },
+    { "key": "loan_id", "value": "1" },
+    { "key": "family_id", "value": "1" },
+    { "key": "notification_id", "value": "1" }
+  ]
+}
