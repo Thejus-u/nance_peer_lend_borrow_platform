@@ -67,8 +67,7 @@ The web service is fronted by an internet-facing ALB and Route53 alias record fo
 
 
 <p align="center">
-  <img src="ECS Cluster Service-2026-07-08-194805.svg
-" width="900">
+  <img src="images(workflow)\ECS_Cluster_Service-2026-07-08-194805.svg" width="900">
 </p>
 
 <p align="center">

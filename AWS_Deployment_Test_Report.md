@@ -4,8 +4,6 @@
 - URL: https://thejus.fun
 - Environment: AWS deployed production-like environment
 - Date: 2026-07-08
-- Browser: Playwright-controlled Chromium
-- Tester: GitHub Copilot (GPT-5.3-Codex)
 
 ## Test Summary
 - Authentication: PASS (with one route discrepancy)

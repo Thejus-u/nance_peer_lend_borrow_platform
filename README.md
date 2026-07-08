@@ -41,8 +41,7 @@ Implemented in this repository:
 ## 3. Architecture
 
 <p align="center">
-  <img src="ECS_Cluster_Service-2026-07-08-194805.svg
-" width="900">
+  <img src="ECS_Cluster_Service-2026-07-08-194805.svg" width="900">
 </p>
 
 <p align="center">
@@ -525,6 +524,3 @@ If you are evaluating this assignment, start with this order:
 3. DESIGN.md for architecture and sequence diagrams
 4. DEPLOY.md for production infrastructure and operations
 5. Tests in src/apps/*/tests for executable evidence
-#   n a n c e _ p e e r _ l e n d _ b o r r o w _ p l a t f o r m 
- 
- 

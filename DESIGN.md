@@ -21,7 +21,7 @@ The system is organized by Django apps with service-layer orchestration:
 
 ## Core Sequence: Lend -> Accept -> Repay -> Settle
 <p align="center">
-  <img src="images(workflow)/Idempotency Key Payment.svg" width="900">
+  <img src="images(workflow)/Idempotency_Key_Payment.svg" width="900">
 </p>
 
 <p align="center">
@@ -32,7 +32,7 @@ The system is organized by Django apps with service-layer orchestration:
 ## Core Sequence: Gmail Sync -> Parse -> Discover Account
 
 <p align="center">
-  <img src="images(workflow)/Gmail Ingestion Service.svg" width="900">
+  <img src="images(workflow)\Gmail_ingestion_Service.svg" width="900">
 </p>
 
 <p align="center">
@@ -51,7 +51,7 @@ The following ER diagram is validated directly against Django model source code 
 - apps/integrations/models.py
 
 <p align="center">
-  <img src="images(workflow)\Gmail Account Integration-2026-07-08-202401.svg" width="900">
+  <img src="images(workflow)\Gmail_Account_Integration-2026-07-08-202401.svg" width="900">
 </p>
 
 <p align="center">
